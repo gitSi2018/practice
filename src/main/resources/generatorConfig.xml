@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <!--驱动包的绝对路径 -->
+
+    <!--生成映射的类型，也可以生成ibatis的。具体参看mybatis-generator -->
+    <context id="DB2Tables" targetRuntime="MyBatis3">
+        <property name="javaFileEncoding" value="UTF-8"/>
+        <property name="javaFormatter" value="org.mybatis.generator.api.dom.DefaultJavaFormatter"/>
+        <property name="xmlFormatter" value="org.mybatis.generator.api.dom.DefaultXmlFormatter"/>
+        <property name="autoDelimitKeywords" value="true"/>
+        <property name="beginningDelimiter" value="`"/>
+        <property name="endingDelimiter" value="`"/>
+
+
+        <plugin type="org.mybatis.generator.plugins.EqualsHashCodePlugin" />
+        <plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
+        <plugin type="org.mybatis.generator.plugins.CaseInsensitiveLikePlugin" />
+
+        <commentGenerator>
+            <property name="suppressDate" value="true" />
+            <!--<property name="suppressAllComments" value="true" />-->
+            <property name="suppressAllComments" value="false" />
+            <property name="javaFileEncoding" value="UTF-8"/>
+            <!-- 此处为 true 时，生成的 Model 包含对应表字段注释 -->
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <!--数据库连接信息。具体参看mybatis-generator -->
+        <jdbcConnection driverClass="com.mysql.cj.jdbc.Driver" connectionURL="jdbc:mysql://127.0.0.1:3306/tf-manager?useSSL=false"
+                        userId="root" password="root123456">
+        </jdbcConnection>
+        <!--具体参看mybatis-generator -->
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="true" />
+        </javaTypeResolver>
+
+        <!--以下三个标签主要解析targetPackage和targetProject。其它的具体参看mybatis-generator -->
+
+        <!--targetPackage，是生成文件所在的包路径 -->
+        <!--targetProject，是相对于本xml配置文件的相对路径，是targetPackage包路径的父级目录。 -->
+        <!--baseVo="fortuna.vo.BaseVo"-->
+
+        <javaModelGenerator targetPackage="com.si.practice.infrature.mysql.entity"
+                            targetProject="src/main/java">
+        </javaModelGenerator>
+        <sqlMapGenerator targetPackage="mappers/order" targetProject="src/main/resources">
+            <property name="enableSubPackages" value="true" />
+        </sqlMapGenerator>
+        <javaClientGenerator type="XMLMAPPER" targetPackage="com.si.practice.infrature.mysql.mapper" targetProject="src/main/java/">
+            <property name="enableSubPackages" value="true" />
+        </javaClientGenerator>
+
+<!--                <table tableName="ota_region_price" domainObjectName="RegionPrice"-->
+<!--                       delimitAllColumns="true">-->
+<!--                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+
+<!--                </table>-->
+        <table tableName="demand_order" domainObjectName="DemandOrder"
+               delimitAllColumns="true">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+
+        </table>
+
+        <!--        <table tableName="tf_fund_pay_reconcile_record" domainObjectName="TfFundPayReconcileRecord"-->
+        <!--               delimitAllColumns="true">-->
+        <!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+        <!--        </table>-->
+
+<!--                <table tableName="tf_fund_order_pay_plan" domainObjectName="TfFundOrderPayPlan"-->
+<!--                       delimitAllColumns="true">-->
+<!--                    <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--                </table>-->
+
+
+<!--        <table tableName="tf_account_withdraw_record" domainObjectName="TfAccountWithdrawRecord"-->
+<!--               delimitAllColumns="true">-->
+<!--            <generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+<!--        </table>-->
+
+
+
+    </context>
+</generatorConfiguration>

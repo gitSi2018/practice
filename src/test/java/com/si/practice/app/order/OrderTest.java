@@ -41,6 +41,10 @@ public class OrderTest {
         log.info("hello");
     }
 
+    /**
+     * initOrder 初始化订单信息。需要用的时候打开 @Before的注释。
+     *
+     */
 //    @Before
     public void initOrder(){
 
@@ -54,6 +58,9 @@ public class OrderTest {
         orderCreateService.batchInsert(orderDTOS);
     }
 
+    /**
+     * 测试乐观锁。测试时initOrder。
+     */
     @Test
     public void updateTest(){
 
@@ -71,6 +78,9 @@ public class OrderTest {
     }
 
 
+    /**
+     * 批量插入测试
+     */
     @Test
     public void bitchInsertTest(){
 

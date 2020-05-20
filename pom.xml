@@ -8,6 +8,7 @@
 		<module>java-foundation</module>
 		<module>distribution</module>
 		<module>middleware</module>
+		<module>algorithm</module>
 	</modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>

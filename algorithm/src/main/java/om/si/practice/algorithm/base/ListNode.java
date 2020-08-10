@@ -1,8 +1,11 @@
 package om.si.practice.algorithm.base;
 
+import lombok.ToString;
+
 /**
  * om.si.practice.algorithm.utils.base - 链表结构
  */
+@ToString
 public class ListNode {
     public int val;
     public ListNode next;

@@ -9,7 +9,8 @@
 		<module>distribution</module>
 		<module>middleware</module>
 		<module>algorithm</module>
-	</modules>
+        <module>spring-study</module>
+    </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>

@@ -264,7 +264,7 @@ public class AlternateDeal {
             while (currentNumber < size) {
 //                log.info(Thread.currentThread().getName());
                 if (type == 1) {
-//                    if (currentNumber % 2 == 0) {
+                    if (currentNumber % 2 == 0) {
                         synchronized (NumberC.class) {
                             //双重检查
                             Thread current = Thread.currentThread();
@@ -276,9 +276,9 @@ public class AlternateDeal {
 //                            log.info(current.getName() + ":\n {}", (char) (currentNumber + 65));
                             NumberC.class.notifyAll();
                         }
-//                    }
+                    }
                 } else {
-//                    if (currentNumber % 2 != 0) {
+                    if (currentNumber % 2 != 0) {
                         synchronized (NumberC.class) {
                             //双重检查
                             Thread current = Thread.currentThread();
@@ -290,10 +290,51 @@ public class AlternateDeal {
 //                            log.info(current.getName() + ":\n {}", (char) (currentNumber + 65));
                             NumberC.class.notifyAll();
                         }
-//                    }
+                    }
                 }
             }
             log.info(Thread.currentThread() + " totalTime={}", System.currentTimeMillis() - startTime);
+        }
+    }
+
+    private static class ThreadTarget extends Thread {
+
+
+        private Object obj = new Object();
+        private volatile int i = 0;
+
+        @Override
+        public void run() {
+            int maxNumber = 6500000;
+            Long startTime = System.currentTimeMillis();
+            while (i < maxNumber) {
+                synchronized (obj) {
+//                    System.out.println(Thread.currentThread().getName() + ":" + i);
+                    i++;
+
+                    obj.notify();
+                    try {
+                        if (i < maxNumber) {
+                            obj.wait();
+                        }
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            log.info(Thread.currentThread().getName() + " running time:{}", System.currentTimeMillis() - startTime);
+
+        }
+
+
+        public static void main(String[] args) {
+            ThreadTarget target = new ThreadTarget();
+
+            Thread t1 = new Thread(target, "A");
+            t1.start();
+
+            Thread t2 = new Thread(target, "B");
+            t2.start();
         }
     }
 }

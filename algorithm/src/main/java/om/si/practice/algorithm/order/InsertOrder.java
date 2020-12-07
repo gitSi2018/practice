@@ -10,9 +10,17 @@ public class InsertOrder {
 
 
     public static void main(String[] args) {
-        int[] ages = {400, 5, 3, 6, 12,87,2,1,56,23,9,1,7,8};
+//        int[] ages = {400, 5, 3, 6, 12,87,2,1,56,23,9,1,7,8};
+//
+//        log.info("after order:{}", insertOrder(ages, false));
 
-        log.info("after order:{}", insertOrder(ages, false));
+
+        Integer i = 6;
+        Integer j = i;
+        i = i ^ j;
+        j = i ^ j;
+        i = i ^ j;
+        log.info("i:{}, j:{}", i, j);
     }
 
     /**

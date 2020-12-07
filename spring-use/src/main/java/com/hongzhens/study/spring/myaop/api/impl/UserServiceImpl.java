@@ -1,6 +1,7 @@
 package com.hongzhens.study.spring.myaop.api.impl;
 
 import com.hongzhens.study.spring.myaop.api.UserService;
+import com.hongzhens.study.spring.myaop.api.entity.dto.InsertDTO;
 import com.hongzhens.study.spring.myaop.myannotion.CommonMethodCheck;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.framework.AopContext;
@@ -20,7 +21,7 @@ public class UserServiceImpl
 
 
     @CommonMethodCheck
-//    @Override
+    @Override
     public void update(Long id) {
 
         log.info("UserServiceImpl update, id:{}", id);
@@ -28,7 +29,7 @@ public class UserServiceImpl
 
 
     @CommonMethodCheck
-//    @Override
+    @Override
     public Long add(String name, Integer age) {
 
         log.info("UserServiceImpl add, name:{}, age:{}", name, age);
@@ -37,7 +38,7 @@ public class UserServiceImpl
     }
 
     @CommonMethodCheck
-    public String getName(Long id){
+    String getName(Long id){
 
         log.info("UserServiceImpl getName, id:{}", id);
         return "张三";

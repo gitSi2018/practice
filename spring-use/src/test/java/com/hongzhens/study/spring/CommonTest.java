@@ -1,7 +1,9 @@
 package com.hongzhens.study.spring;
 
 import com.hongzhens.study.spring.myaop.api.UserService;
+import com.hongzhens.study.spring.myaop.api.entity.dto.InsertDTO;
 import com.hongzhens.study.spring.myaop.api.impl.UserServiceImpl;
+import com.hongzhens.study.spring.myaop.api.manager.UserManager;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -24,11 +26,14 @@ import javax.annotation.Resource;
 public class CommonTest {
 
 
-    @Resource
-    private UserService userService;
+//    @Resource
+//    private UserService userService;
+
+//    @Autowired
+//    private UserServiceImpl userServiceImpl;
 
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserServiceImpl userService;
 
     @Test
     public void commonCheck1(){
@@ -46,14 +51,26 @@ public class CommonTest {
     @Test
     public void commonCheck3(){
 
-        log.info("result:{}", userServiceImpl.add("zhangsan", 1));
+        log.info("result:{}", userService.add("zhangsan", 1));
     }
 
     @Test
     public void commonCheck4(){
 
-        userServiceImpl.update( 1L);
+        userService.update( 1L);
     }
+
+    @Resource
+    private UserManager userManager;
+
+    @Test
+    public void parameterTest(){
+
+        InsertDTO dto = new InsertDTO(null, "张", 21);
+        userManager.insert(dto);
+    }
+
+
 
 //    @Test
 //    public void commonCheck3(){

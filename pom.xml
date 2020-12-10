@@ -9,7 +9,7 @@
 		<module>distribution</module>
 		<module>middleware</module>
 		<module>algorithm</module>
-        <module>spring-study</module>
+        <module>common</module>
     </modules>
     <parent>
 		<groupId>org.springframework.boot</groupId>
@@ -116,6 +116,7 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -126,6 +127,13 @@
 				<version>${spring-cloud.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>com.si</groupId>
+				<artifactId>common</artifactId>
+				<version>1.0.0</version>
+				<scope>compile</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

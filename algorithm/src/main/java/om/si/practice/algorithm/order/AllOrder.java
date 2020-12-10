@@ -24,7 +24,9 @@ public class AllOrder {
 
     public static void main(String[] args) {
 
-        multiCheck(100, 1000, 100000);
+        multiCheck(1000, 1000, 1000);
+//        zuiXiaoHCheck(10, 100, 1000);
+//        niXuCheck(1000, 10000, 1000000);
     }
 
     public static boolean multiCheck(int checkTimes, int maxSize, int maxNumber){
@@ -52,8 +54,10 @@ public class AllOrder {
 //        chooseOrder(arrays2);
 //        maoPaoOrder(arrays2);
 //        insertOrder(arrays2);
-//        quickOrderDiGui(arrays);
-        guiBingTest(arrays2);
+        quickOrderDiGui(arrays2);
+//        quickOrderDiGuiTempSpace(arrays2, 0, arrays2.length - 1);
+//        guiBingTest(arrays2);
+
         List<NoEqual> noEquals = new ArrayList<>();
         for (int i = 0; i < arrays.length; i++){
             if (arrays1[i] != arrays2[i]){
@@ -145,13 +149,16 @@ public class AllOrder {
         if (arrays == null || arrays.length <= 1) return;
         arrays = quickOrderDiGui(arrays, 0, arrays.length - 1);
 
+//        quickOrder(arrays, 0, arrays.length - 1);
     }
 
+    //该方法使用了中间数组，空间复杂度为O(n)，减少了移位操作。但实际上空间复杂度在O(1)的情况下，频繁的移位操作可以巧妙的避免。
     private static int[] quickOrderDiGui(int[] arrays, final int startIndex, final int endIndex){
         if (endIndex - startIndex < 1) return arrays;
 //        int startData = arrays[startIndex];
         int finalIndex = startIndex;
         for (int i = startIndex + 1; i <= endIndex; i++){
+            //使用中间数组来存储吧，如果不用额外的空间，移位的操作也可能很频繁
             if (arrays[i] < arrays[finalIndex]){
                 int startData = arrays[finalIndex];
                 arrays[finalIndex] = arrays[i];
@@ -163,9 +170,35 @@ public class AllOrder {
         final int finalIndexTemp = finalIndex;
         quickOrderDiGui(arrays, startIndex, finalIndexTemp - 1);
         quickOrderDiGui(arrays, finalIndexTemp + 1, endIndex);
-        log.info("arrays:{}", arrays);
+//        log.info("arrays:{}", arrays);
         return arrays;
     }
+
+//    private static void quickOrderDiGuiTempSpace(int[] arrays, final int startIndex, final int endIndex){
+//        if (endIndex - startIndex <= 0) return;
+//        int firstData = arrays[startIndex];
+//        int[] tempArray = new int[endIndex - startIndex + 1];
+//        int tailIndex = 0;
+//        int headIndex = tempArray.length - 1;
+//        for (int i = startIndex + 1; i <= endIndex; i++){
+//            if (arrays[i] > firstData){
+//                tempArray[headIndex--] = arrays[i];
+//                continue;
+//            }
+//
+//            tempArray[tailIndex++] = arrays[i];
+//        }
+//        final int finalIndex = startIndex + tailIndex;
+//        for (int i = startIndex; i <= endIndex; i++){
+//            if(i == finalIndex) {
+//                arrays[i] = firstData;
+//                continue;
+//            }
+//            arrays[i] = tempArray[i - startIndex];
+//        }
+//        quickOrderDiGuiTempSpace(arrays, startIndex, finalIndex - 1);
+//        quickOrderDiGuiTempSpace(arrays, finalIndex + 1, endIndex);
+//    }
 
 //    private static int[] quickOrderFor(int[] arrays, int startIndex, int endIndex){
 //
@@ -175,44 +208,280 @@ public class AllOrder {
 //        }
 //    }
 
+    private static void quickOrderDiGuiTempSpace(int[] arrays, final int startIndex, final int endIndex){
+
+        if (endIndex - startIndex  <= 0) return;
+        int firstData = arrays[startIndex];
+        int[] tempArray = new int[endIndex - startIndex + 1];
+        int headIndex = tempArray.length - 1;
+        int tailIndex = 0;
+        for (int i = startIndex + 1; i <= endIndex; i++){
+            if (arrays[i] < firstData){
+                tempArray[tailIndex++] = arrays[i];
+                continue;
+            }
+            tempArray[headIndex--] = arrays[i];
+        }
+        final int finalIndex = startIndex + tailIndex;
+        for (int i = startIndex; i <= endIndex; i++){
+            if (i == finalIndex) {
+                arrays[i] = firstData;
+                continue;
+            }
+            arrays[i] = tempArray[i - startIndex];
+        }
+        quickOrderDiGuiTempSpace(arrays, startIndex, finalIndex - 1);
+        quickOrderDiGuiTempSpace(arrays, finalIndex + 1, endIndex);
+
+    }
+
 
     public static void guiBingTest(int[] arrays){
 
-        guiBingOrder(arrays, 0, arrays.length - 1);
-        int a = 0;
+
+        int minSum = guiBingOrderZuiXiaoHe(arrays, 0, arrays.length - 1);
+
     }
 
-    public static void guiBingOrder(int[] arrays, int left, int right){
+    public static void zuiXiaoHCheck(int checkTimes, int maxSize, int maxNumber){
 
-        if (left >= right) return;
-        int middle = left + (right - left) / 2;
-        guiBingOrder(arrays, left, middle);
-        guiBingOrder(arrays, middle + 1, right);
-        merge(arrays, left, middle, right);
+
+        for (int i = 0; i < checkTimes; i++){
+
+            int[] arrays = NumberUtil.generateRandomArray(maxSize, maxNumber);
+            log.info("generate arrays:{}", arrays);
+            int sum1 = zuiXiaoHeCommon(arrays);
+            int sum2 = guiBingOrderZuiXiaoHe(arrays, 0, arrays.length - 1);
+            log.info("sum1:{}, sum2:{}", sum1, sum2);
+            boolean check = sum1 == sum2;
+            Assert.isTrue(check, "order failed");
+        }
     }
 
-    public static void merge(int[] arrays, int left, int m, int right){
+    public static void niXuCheck(int checkTimes, int maxSize, int maxNumber){
+
+        for (int i = 0; i  < checkTimes; i++){
+
+            int[] arrays = NumberUtil.generateRandomArray(maxSize, maxNumber);
+            int count1 = niXuDuiCommon(arrays);
+            int count2 = guiBingNiXuDui(arrays, 0, arrays.length - 1);
+            log.info("count1:{}, count2:{}", count1, count2);
+            Assert.isTrue(count1 == count2, "failed");
+        }
+    }
+
+    // n^2 最小和
+    public static int zuiXiaoHeCommon(int[] arrays){
+        if (arrays.length <= 1) return 0;
+        int sum = 0;
+        for (int i = 1; i < arrays.length; i++){
+            int data = arrays[i];
+            for (int j = 0; j < i; j++){
+                sum += arrays[j] < data ? arrays[j] : 0;
+            }
+        }
+        return sum;
+    }
+
+    // n^2 逆序对
+    public static int niXuDuiCommon(int[] arrays){
+
+        if (arrays.length <= 1) return 0;
+        int sum = 0;
+        for (int l = 0; l < arrays.length; l++){
+            int lData = arrays[l];
+            for (int r = l + 1; r < arrays.length; r++){
+
+                sum += lData > arrays[r] ? 1  : 0;
+            }
+        }
+        return sum;
+    }
+
+//    public static void guiBingOrder(int[] arrays, int left, int right){
+//
+//        if (left >= right) return;
+//        int middle = left + (right - left) / 2;
+//        guiBingOrder(arrays, left, middle);
+//        guiBingOrder(arrays, middle + 1, right);
+//        merge(arrays, left, middle, right);
+//    }
+
+    // 最小和
+    public static int guiBingOrderZuiXiaoHe(int[] arrays, int start, int end){
+
+        if (end - start <= 0) return 0;
+        int m = start + ((end - start) >> 1);
+        return guiBingOrderZuiXiaoHe(arrays, start, m) +
+                guiBingOrderZuiXiaoHe(arrays, m + 1, end) +
+                mergeZuiXiaohe(arrays, start, m, end);
+
+    }
+    // 最小和merge
+    public static int mergeZuiXiaohe(int[] arrays, final int left, final int m, final int right){
 
         int[] temp = new int[right - left + 1];
-        int r = m + 1;
-        int l = left;
         int index = 0;
+        int l = left;
+        int r = m + 1;
+        int sum = 0;
         while (l <= m && r <= right){
 
-            temp[index++] = arrays[l] <= arrays[r] ? arrays[l++] : arrays[r++];
+            if (arrays[l] < arrays[r]){
+                sum += arrays[l] * (right - r + 1);
+                temp[index++] = arrays[l++];
+                continue;
+            }
+            temp[index++] = arrays[r++];
         }
         while (l <= m){
             temp[index++] = arrays[l++];
         }
         while (r <= right){
-
             temp[index++] = arrays[r++];
         }
-        index = 0;
-        for (int i = left; i <= right; i++){
-            arrays[i] = temp[index++];
+        for (int i = 0; i < temp.length; i++){
+            arrays[i + left] = temp[i];
         }
+        return sum;
     }
+
+    // 归并逆序对
+    public static int guiBingNiXuDui(int[] arrays, final int start, final int end){
+
+        if (end - start <= 0) return 0;
+        int m = start + ( (end - start) >> 1 );
+
+        return guiBingNiXuDui(arrays, start, m) +
+                guiBingNiXuDui(arrays, m + 1, end) +
+                mergeNiXuDui(arrays, start, m, end);
+    }
+
+    // 归并逆序对合并
+    public static int mergeNiXuDui(int[] arrays, final int left, final int m, final int right){
+
+        int[] temp = new int[right - left + 1];
+        int l = left;
+        int r = m + 1;
+        int sum = 0;
+        int index =  0;
+        while (l <= m && r <= right){
+
+            if (arrays[r] < arrays[l]){
+                //
+                sum += m - l + 1;
+                temp[index++] = arrays[r++];
+                continue;
+            }
+            temp[index++] = arrays[l++];
+        }
+        while (l <= m){
+            temp[index++] = arrays[l++];
+        }
+        while (r <= right){
+            temp[index++] = arrays[r++];
+        }
+        for (int i = 0; i < temp.length; i++){
+
+            arrays[i + left] = temp[i];
+        }
+        return sum;
+    }
+
+
+//    public static void merge(int[] arrays, int left, int m, int right){
+//
+//        int[] temp = new int[right - left + 1];
+//        int r = m + 1;
+//        int l = left;
+//        int index = 0;
+//        while (l <= m && r <= right){
+//
+//            temp[index++] = arrays[l] <= arrays[r] ? arrays[l++] : arrays[r++];
+//        }
+//        while (l <= m){
+//            temp[index++] = arrays[l++];
+//        }
+//        while (r <= right){
+//
+//            temp[index++] = arrays[r++];
+//        }
+//        index = 0;
+//        for (int i = left; i <= right; i++){
+//            arrays[i] = temp[index++];
+//        }
+//    }
+
+
+    // 分为小于的一组，等于的一组，大于的一组。小于大于两头逼近，知道遍历的i 等于大于这组的头。此时确定了这三组。
+    // 等于这一组的最终位置已经确定。剩下的就是小于、大于这两组组内重复同样的操作即可。
+    public static void quickOrder(int[] arrays, final int start, final int end){
+
+        if (end - start <= 0) return;
+        int data = arrays[start];
+        int tailIndex = start;
+        int headIndex = end;
+        for (int i = start; i <= headIndex; ){
+
+            if (arrays[i] == data) {
+                i++;
+                continue;
+            }
+            if (arrays[i] < data){
+                //交换
+                int tailData = arrays[tailIndex];
+                arrays[tailIndex++] = arrays[i];
+                arrays[i++] = tailData;
+                continue;
+            }
+            int headData = arrays[headIndex];
+            arrays[headIndex--] = arrays[i];
+            arrays[i] = headData;
+        }
+        quickOrder(arrays, start, tailIndex - 1);
+        quickOrder(arrays, headIndex + 1, end);
+    }
+
+    private void cqs(int[] arr, int left, int right) {
+        if (left >= right) {
+            return;
+        }
+        //选定一个基准(此处选定最后一个值) 通过这个基准进行操作分为两部分 使其中一部分小于另一部分 然后对每一部分进行递归操作； 最后合并所有分治项
+        int middleIndex = cpartition(arr, left, right, right);
+        cqs(arr, left, middleIndex - 1);
+        cqs(arr, middleIndex + 1, right);
+    }
+
+    /**
+     *
+     * @param arr
+     * @param left 索引
+     * @param right 索引
+     * @param pivot 选定的基准值的索引
+     * @return
+     * todo 验证是否正确
+     */
+    private int cpartition(int[] arr, int left, int right, int pivot) {
+        int pivotVal = arr[pivot];
+        arr[pivot] = arr[right];
+        arr[right] = pivotVal;
+
+        int middleIndex = left; // 初始先选定最左值索引为中间位置，此时左边部分没有任何值
+        for (int i = left; i <= right; i++) {
+            if (arr[i] < pivotVal) {
+                //交换值 是左边部分全部小于右边部门
+                if (i != middleIndex) { // 该if语句只是一个微小的优化操作
+                    int oldMiddleVal = arr[middleIndex];
+                    arr[middleIndex] = arr[i];
+                    arr[i] = oldMiddleVal;
+                }
+                middleIndex++; //更新中间位置
+            }
+        }
+        return middleIndex;
+    }
+
+
 
 
     @Data

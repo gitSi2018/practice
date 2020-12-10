@@ -14,11 +14,18 @@ public class SimpleTest {
 
     public static void main(String[] args) {
 
+        int sum = 0;
         new Thread(() ->{
             int count = 0;
             while (count++ < 10) {
                 log.info("hello thread running!");
             }
         }).start();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+            }
+        });
     }
 }

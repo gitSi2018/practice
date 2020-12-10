@@ -10,6 +10,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>java-foundation</artifactId>
+    <dependencies>
+        <dependency>
+            <groupId>com.si</groupId>
+            <artifactId>common</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.si</groupId>
+            <artifactId>common</artifactId>
+            <scope>compile</scope>
+        </dependency>
+    </dependencies>
 
 
 </project>

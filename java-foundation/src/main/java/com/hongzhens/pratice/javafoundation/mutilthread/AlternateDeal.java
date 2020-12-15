@@ -1,6 +1,7 @@
 package com.hongzhens.pratice.javafoundation.mutilthread;
 
 import lombok.SneakyThrows;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.*;
@@ -327,14 +328,42 @@ public class AlternateDeal {
         }
 
 
-        public static void main(String[] args) {
-            ThreadTarget target = new ThreadTarget();
+        public static void main(String[] args) throws InterruptedException {
+//            ThreadTarget target = new ThreadTarget();
+//
+//            Thread t1 = new Thread(target, "A");
+//            t1.start();
+//
+//            Thread t2 = new Thread(target, "B");
+//            t2.start();
 
-            Thread t1 = new Thread(target, "A");
-            t1.start();
-
-            Thread t2 = new Thread(target, "B");
-            t2.start();
+            threadOrder();
         }
+    }
+
+    // CompletableFuture 非常强大。以更加便捷的方式对多线程进行协调。
+    //  CompletableFuture的创建主要是4个static方法 runAsync（无参，无返回）、supplyAsync（无参有返回）的指定Executor和不指定Executor。
+    // 线程之间的关系可以描述为串行、AND汇聚、OR汇聚
+    // 异常处理。exceptionally（异常发生后进入执行）、whenComplete（类似于finally）
+    // 补充 Function 接口函数既支持入参也支持返回  Consumer 有入参无返回  Runnable 无入参无返回
+
+    //注意： CompletableFuture 默认使用他自定义的线程池，如果有比较耗时的操作，
+    // 最好指定独立的线程池避免使其他使用了CompletableFuture默认线程池的线程饥饿。最好要有异常处理
+    // todo 疑问 thenRun 和 thenRunAsync有什么区别 thenCompose又有什么用
+    public static void threadOrder() throws InterruptedException {
+
+        CompletableFuture<Void> future1 =
+                CompletableFuture.runAsync(new Thread(() -> log.info("ThreadA"),  "A"))
+                        .thenRun(new Thread(() -> log.info("ThreadB"), "B"))
+                        .thenRun(new Thread(() -> log.info("ThreadC"), "C")).
+                        exceptionally(e -> {
+                            log.info("exceptionally. e:{}", e);
+                            return null;
+                        }).
+                        whenComplete((t, u) -> {
+                            log.info("complete. t:{}, u:{}", t, u);
+                        });
+        future1.join();
+        log.info("main thread");
     }
 }

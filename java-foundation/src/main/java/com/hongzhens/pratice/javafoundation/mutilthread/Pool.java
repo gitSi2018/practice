@@ -32,8 +32,8 @@ public class Pool {
 
     public static void main(String[] args) throws Exception{
 
-//        testThreadPoolExecutorAdd();
-        futureUse1();
+        testThreadPoolExecutorAdd();
+//        futureUse1();
 //        futureUse2();
 //        execOrderUse1();
 //        completableFutureUse1();
@@ -59,10 +59,11 @@ public class Pool {
 
     private static void testAdd(int size){
 
+        AtomicInteger atomicInteger = new AtomicInteger(0);
         while (size > 0 ){
             size--;
             try {
-                executor.execute(factory.newThread(() -> log.info("hello")));
+                executor.execute(factory.newThread(() -> log.info("hello:{}", atomicInteger.incrementAndGet())));
             }catch (Exception e){
 
                 log.error("too many", e);

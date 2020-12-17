@@ -25,6 +25,18 @@ public class NumberUtil {
         return arrays;
     }
 
+    public static Integer[] generateRandomIntegerArray(int maxSize, int maxNumber){
+
+        int size = randomData(maxSize);
+        if (size == 0) return new Integer[0];
+
+        Integer[] arrays = new Integer[size];
+        for (int i = 0; i < size; i++){
+            arrays[i] = randomData(maxNumber);
+        }
+        return arrays;
+    }
+
     public static int randomData(int max){
 
         return (int)(Math.random() * max);

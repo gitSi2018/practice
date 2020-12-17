@@ -152,8 +152,9 @@ public class MaxHeap<T extends Comparable<T>>
     public static void test1(){
 
 
+
         MaxHeap<Integer> maxHeap =
-                MaxHeap.generate(new Integer[]{2, 4, 1, 5, 6, 7, 1, 4, 7, 98}, 20);
+                MaxHeap.generate(NumberUtil.generateRandomIntegerArray(30, 1000), 20);
 
         while (maxHeap.getRoot() != null){
 
@@ -199,7 +200,10 @@ public class MaxHeap<T extends Comparable<T>>
 //        for (int  i  = 0; i  < 10000; i++) {
 //            test();
 //        }
-        test1();
+        for (int i = 0; i < 100;  i++) {
+            test1();
+            System.out.println("");
+        }
     }
 
 

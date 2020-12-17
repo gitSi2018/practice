@@ -147,9 +147,9 @@ public class AllOrder {
     public static void quickOrderDiGui(int[] arrays){
 
         if (arrays == null || arrays.length <= 1) return;
-        arrays = quickOrderDiGui(arrays, 0, arrays.length - 1);
+//        arrays = quickOrderDiGui(arrays, 0, arrays.length - 1);
 
-//        quickOrder(arrays, 0, arrays.length - 1);
+        quickOrder(arrays, 0, arrays.length - 1);
     }
 
     //该方法使用了中间数组，空间复杂度为O(n)，减少了移位操作。但实际上空间复杂度在O(1)的情况下，频繁的移位操作可以巧妙的避免。
@@ -413,12 +413,14 @@ public class AllOrder {
 //    }
 
 
+    // todo 主定理 T(n) = aT(n/b) + O(n^d). 只对子问题规模一致的问题使用。
     // 分为小于的一组，等于的一组，大于的一组。小于大于两头逼近，知道遍历的i 等于大于这组的头。此时确定了这三组。
     // 等于这一组的最终位置已经确定。剩下的就是小于、大于这两组组内重复同样的操作即可。
     public static void quickOrder(int[] arrays, final int start, final int end){
 
         if (end - start <= 0) return;
-        int data = arrays[start];
+        //随机快排。非随机的情况下，O(n)为n^2. 随机情况下(n^2出现的情况是一个概率)，用数学方式计算出时间复杂度为 nlogn
+        int data = arrays[start + (int)(Math.random() *  (end - start))];
         int tailIndex = start;
         int headIndex = end;
         for (int i = start; i <= headIndex; ){
@@ -480,6 +482,8 @@ public class AllOrder {
         }
         return middleIndex;
     }
+
+
 
 
 

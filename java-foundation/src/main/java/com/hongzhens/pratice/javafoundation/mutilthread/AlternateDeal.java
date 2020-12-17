@@ -352,7 +352,7 @@ public class AlternateDeal {
     // todo 疑问 thenRun 和 thenRunAsync有什么区别 thenCompose又有什么用
     public static void threadOrder() throws InterruptedException {
 
-        CompletableFuture<Void> future1 =
+        CompletableFuture<Void> future =
                 CompletableFuture.runAsync(new Thread(() -> log.info("ThreadA"),  "A"))
                         .thenRun(new Thread(() -> log.info("ThreadB"), "B"))
                         .thenRun(new Thread(() -> log.info("ThreadC"), "C")).
@@ -363,7 +363,7 @@ public class AlternateDeal {
                         whenComplete((t, u) -> {
                             log.info("complete. t:{}, u:{}", t, u);
                         });
-        future1.join();
+        future.join();
         log.info("main thread");
     }
 }

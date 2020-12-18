@@ -1,4 +1,4 @@
-package om.si.practice.algorithm.common;
+package om.si.practice.algorithm.tree;
 
 /**
  * @author: HongZhenSi

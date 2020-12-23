@@ -1,5 +1,6 @@
 package om.si.practice.algorithm.tree;
 
+import om.si.practice.algorithm.base.ListNode;
 import om.si.practice.algorithm.utils.StringUtils;
 
 /**
@@ -44,11 +45,11 @@ public class PrefixTree {
         //查询完全匹配的总数
         Node curNode = root;
         char[] words = word.toCharArray();
-        for(int i = 0; i < words.length; i++){
+        for (char c : words) {
 
-            int road = words[i] - 'a';
+            int road = c - 'a';
             curNode = curNode.children[road];
-            if(curNode == null) return 0;
+            if (curNode == null) return 0;
         }
         return curNode.end;
     }
@@ -77,10 +78,10 @@ public class PrefixTree {
         char[] words = word.toCharArray();
         Node curNode = root;
         root.pass++;
-        for(int i = 0; i < words.length; i++){
+        for (char c : words) {
 
-            int road = words[i] - 'a';
-            if(curNode.children[road] == null){
+            int road = c - 'a';
+            if (curNode.children[road] == null) {
                 curNode.children[road] = new Node();
             }
             curNode = curNode.children[road];
@@ -90,10 +91,62 @@ public class PrefixTree {
     }
 
 
+
+    private static String[] strings;
+
+    public static int commonWordCount(String word){
+
+        int count = 0;
+        for(String str : strings){
+
+            count += str.equals(word) ? 1 : 0;
+        }
+        return count;
+    }
+
+    public static int commonPrefixCount(String word){
+
+        int count = 0;
+        for(String str : strings){
+
+            count += str.startsWith(word) ? 1 : 0;
+        }
+        return count;
+    }
+
+    public static void duiShuQi(){
+
+        int[] a = new int[]{1, 3};
+        String[] initStrings = StringUtils.generateRandomStr(1000, 26);
+        PrefixTree tree = new PrefixTree(initStrings);
+        strings = initStrings;
+
+        String[] checkStrings = StringUtils.generateRandomStr(100000, 26);;
+        for(String str : checkStrings){
+
+            int prefix1 = tree.prefixCount(str);
+            int prefix2 = commonPrefixCount(str);
+
+            int count1 = tree.wordCount(str);
+            int count2 = tree.wordCount(str);
+
+            if(prefix1 != prefix2){
+
+                System.out.println("prefix1 <> prefix2. prefix1:" + prefix1 + " prefix2:" + prefix2);
+            }
+            if(count1 != count2){
+
+                System.out.println("count1 <> count2. count1:" + count1 + " count2:" + prefix2);
+            }
+        }
+
+    }
+
+
     public static void main(String... args){
 
-        test();
-
+//        test();
+        duiShuQi();
     }
 
     public static void test(){
@@ -114,5 +167,6 @@ public class PrefixTree {
                     " temp:" + temp + "  tempWord:" + tempWord + " temPrefix:" + temPrefix + "\n");
         }
     }
+
 
 }

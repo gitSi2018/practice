@@ -9,6 +9,11 @@ import lombok.ToString;
 public class ListNode {
     public int val;
     public ListNode next;
+
+    public ListNode(){
+
+    }
+
     public ListNode(int x) {
         val = x;
         next = null;
@@ -34,4 +39,18 @@ public class ListNode {
         }
         return first;
     }
+
+    public static void main(String... args){
+
+        int a = Integer.MIN_VALUE;
+        int b = 0 - a;
+        int c =  ~a;
+        int d = a / 10;
+        int e = a % 10;
+        ListNode head = new ListNode();
+        if( (head = head.next).next == null ){
+
+        }
+    }
+
 }

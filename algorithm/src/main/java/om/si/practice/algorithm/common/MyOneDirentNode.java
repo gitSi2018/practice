@@ -17,6 +17,27 @@ public class MyOneDirentNode<T> {
     private MyOneDirentNode<T> nextNode;
 
 
+
+    public MyOneDirentNode<T> delete(T data){
+        if (data == null) throw new RuntimeException("data cannot be null");
+        MyOneDirentNode<T> temp = new MyOneDirentNode<T>();
+        temp.nextNode = this;
+        MyOneDirentNode<T> pre = temp;
+        MyOneDirentNode<T> cur = this;
+        while(cur != null){
+
+            if(data.equals(cur.data)){
+
+                pre.nextNode = cur.nextNode;
+            }else{
+                pre = pre.nextNode;
+            }
+            cur = cur.nextNode;
+
+        }
+        return temp.nextNode;
+    }
+
     @Override
     public String toString(){
 

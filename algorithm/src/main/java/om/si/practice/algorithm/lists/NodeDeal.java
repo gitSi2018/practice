@@ -19,55 +19,54 @@ public class NodeDeal {
 
     public static void main(String[] args) {
 
-//        MyOneDirentNode oneDirentNode = generateMyOneDirentNode(10);
-//
-//        log.info("MyOneDirentNode:{}", oneDirentNode);
+        MyOneDirentNode<Integer> oneDirentNode = generateMyOneDirentNode(5);
+        log.info("MyOneDirentNode:{}", oneDirentNode);
+        oneDirentNode = oneDirentNode.delete(0);
+        log.info("MyOneDirentNode:{}", oneDirentNode);
 //        //oneDirentNode 需要重新赋值，因为参数传的是引用
 //        oneDirentNode = revertNodeDeal(oneDirentNode);
 //        log.info("MyOneDirentNode:{}", oneDirentNode);
 //
-//        MyNode myNode = generateMyNode(20);
+//        MyNode<Integer> myNode = generateMyNode(1);
 //        log.info("myNode:{}", myNode);
 //        myNode = revertNodeDeal(myNode);
-//        log.info("myNode:{}", myNode);
-//        myNode = myNode.deleteSpecifyDataNode(1);
-
-        containChars("How do you do? 你好呀");
+//        log.info("revertNodeDeal myNode:{}", myNode);
+//        myNode = myNode.deleteSpecifyDataNode(0);
+//        log.info(" delete myNode:{}", myNode);
+//
+//        containChars("How do you do? 你好呀");
 
     }
 
-    public static MyNode revertNodeDeal(MyNode head){
+    public static MyNode<Integer> revertNodeDeal(MyNode<Integer> head){
 
-        if (head ==  null || head.getNextNode() == null) return head;
-        MyNode newHeadNode = head;
-        MyNode dealNode = head.getNextNode();
-        newHeadNode.setNextNode(null);
-//        tailNode.setPreNode(dealNode);
-        while (dealNode != null){
+        if(head == null || head.getNextNode() == null) return head;
+        MyNode<Integer> cur = head;
+        MyNode<Integer> tail = new MyNode<Integer>();
+        while(cur != null){
 
-            MyNode nextNode = dealNode.getNextNode();
-            dealNode.setPreNode(null);
+            MyNode<Integer> next = cur.getNextNode();
+            MyNode<Integer> pre = cur.getPreNode();
+            cur.setPreNode(next);
+            cur.setNextNode(pre);
+            tail = cur;
+            cur = next;
 
-            dealNode.setNextNode(newHeadNode);
-            newHeadNode.setPreNode(dealNode);
-
-            newHeadNode = dealNode;
-            dealNode = nextNode;
         }
-        return newHeadNode;
+        return tail;
     }
 
 
 
-    private static MyNode generateMyNode(int size){
+    private static MyNode<Integer> generateMyNode(int size){
 
-        MyNode headNode = new MyNode();
+        MyNode<Integer> headNode = new MyNode<>();
         headNode.setData(0);
         headNode.setPreNode(null);
-        MyNode trailNode = headNode;
+        MyNode<Integer> trailNode = headNode;
         for (int i = 1; i < size; i++){
 
-            MyNode tempNode = new MyNode();
+            MyNode<Integer> tempNode = new MyNode<>();
             tempNode.setData(i);
             tempNode.setPreNode(trailNode);
             trailNode.setNextNode(tempNode);
@@ -78,40 +77,34 @@ public class NodeDeal {
     }
 
 
-    private static MyOneDirentNode generateMyOneDirentNode(int size){
+    private static MyOneDirentNode<Integer> generateMyOneDirentNode(int size){
 
-        MyOneDirentNode oneDirentNode = new MyOneDirentNode();
+        MyOneDirentNode<Integer> oneDirentNode = new MyOneDirentNode<>();
         oneDirentNode.setData(0);
-        MyOneDirentNode tailNode = oneDirentNode;
+        MyOneDirentNode<Integer> tailNode = oneDirentNode;
         for (int i = 1; i < size; i++){
 
-            MyOneDirentNode node = new MyOneDirentNode();
-            node.setData(i);
+            MyOneDirentNode<Integer> node = new MyOneDirentNode<>();
+            node.setData(0);
             tailNode.setNextNode(node);
             tailNode = tailNode.getNextNode();
         }
         return oneDirentNode;
     }
 
-    public static MyOneDirentNode revertNodeDeal(MyOneDirentNode node){
+    public static MyOneDirentNode<Integer> revertNodeDeal(MyOneDirentNode<Integer> node){
 
-        if (node == null || node.getNextNode() == null) return node;
-        MyOneDirentNode tailNode = node;
-        node = node.getNextNode();
-        tailNode.setNextNode(null);
-        while (node != null){
+       if(node == null || node.getNextNode() == null) return node;
+        MyOneDirentNode<Integer> pre = null;
+        MyOneDirentNode<Integer> cur = node;
+        while(cur != null){
 
-            MyOneDirentNode nextNode = node.getNextNode();
-            node.setNextNode(tailNode);
-            tailNode = node;
-            node = nextNode;
+            MyOneDirentNode<Integer> next = cur.getNextNode();
+            cur.setNextNode(pre);
+            pre = cur;
+            cur = next;
         }
-        return tailNode;
-//        while (node != null){
-//
-////            log.info("data:{}", node.getData());
-//            node = node.getNextNode();
-//        }
+        return pre;
     }
 
     public static void containChars(String str) {

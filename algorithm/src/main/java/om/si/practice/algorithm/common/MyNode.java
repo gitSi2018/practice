@@ -24,34 +24,46 @@ public class  MyNode<T> {
 
         StringBuilder builder = new StringBuilder();
         builder.append(data).append(":");
-        MyNode tailNode = nextNode;
-        while (tailNode != null){
-            builder.append(tailNode.getData()).append(":");
-            tailNode = tailNode.getNextNode();
+        MyNode<T> cur = nextNode;
+        MyNode<T> tail = this;
+        while (cur != null){
+            builder.append(cur.getData()).append(":");
+            cur = cur.nextNode;
+            tail = tail.nextNode;
+        }
+        builder.append(" 反 ");
+        while(tail != null){
+
+            builder.append(tail.getData()).append(":");
+            tail = tail.preNode;
         }
         return builder.toString();
     }
 
-    public MyNode deleteSpecifyDataNode(T data){
+    public MyNode<T> deleteSpecifyDataNode(T data){
 
         if (data == null) throw new RuntimeException("data cannot be null");
-        MyNode head = this;
-        MyNode delete = new MyNode();
-        delete.setNextNode(head);
-        while (delete !=null && delete.getNextNode() != null){
-            MyNode nextNode = delete.getNextNode();
-            if (data.equals(nextNode.getData())){
+        MyNode<T> cur = this;
+        MyNode<T> temp = new MyNode<T>();
+        temp.setNextNode(this);
+        this.preNode = temp;
+        while(cur != null){
 
-                if (head == nextNode){
-                    head = nextNode.getNextNode();
+            if(data.equals(cur.data)){
+
+                if(cur.nextNode != null){
+                    cur.nextNode.preNode = cur.preNode;
                 }
-            }else {
-                delete = nextNode;
+                cur.preNode.nextNode = cur.nextNode;
             }
-            delete.setNextNode(nextNode.getNextNode());
+            cur = cur.nextNode;
         }
-        return head;
+        if(temp.nextNode != null){
+            temp.nextNode.preNode = null;
+        }
+        return temp.nextNode;
     }
+
 
     public static void main(String[] args) {
 
